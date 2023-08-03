@@ -1,6 +1,5 @@
 import os
 
-auth_token=os.getenv("EBRAINS_AUTH_TOKEN")
 auth_endpoint = os.getenv("EBRAINS_AUTH_ENDPOINT", "https://iam.ebrains.eu/auth/realms/hbp")
 client_id=os.getenv("EBRAINS_CLIENT_ID", "siibra")
 

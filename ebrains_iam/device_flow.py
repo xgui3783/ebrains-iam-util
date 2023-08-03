@@ -2,13 +2,11 @@ from typing import List
 import requests
 from time import sleep
 
-from .config import auth_token, client_id, polling_interval, max_retries
-from .exceptions import AmbiguousRequest, AuthError
+from .exceptions import AuthError
 from .base import init_config
 
 def start(scope:List[str]=[]) -> str:
-    if auth_token:
-        raise AmbiguousRequest(f"auth_token is provided. Cannot start device flow. Unset auth_token before proceeding.")
+    from .config import client_id, polling_interval, max_retries
     assert client_id
 
     config = init_config()

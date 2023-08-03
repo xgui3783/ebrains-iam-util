@@ -5,12 +5,12 @@ from base64 import b64decode
 import time
 
 from .base import OIDCEndpointConfig, init_config
-from .config import cc_flow_client_id, cc_flow_client_secret
 
 class ClientCredentialsSession:
     oidc_config:OIDCEndpointConfig=None
 
     def __init__(self, scope: List[str]=[]) -> None:
+        from .config import cc_flow_client_id, cc_flow_client_secret
         if not self.oidc_config:
             self.__class__.oidc_config = init_config()
             self.oidc_config = self.__class__.oidc_config
@@ -24,6 +24,7 @@ class ClientCredentialsSession:
         
         
     def refresh(self):
+        from .config import cc_flow_client_id, cc_flow_client_secret
         token_endpoint = self.oidc_config.token_endpoint
         data={
             "client_id": cc_flow_client_id,
