@@ -15,13 +15,15 @@ class ClientCredentialsSession:
             self.__class__.oidc_config = init_config()
             self.oidc_config = self.__class__.oidc_config
         
-        if not self.client_id and not cc_flow_client_id:
-            raise Exception(f"sa client id must be present as env var or supplied on construction time")
-        
-        if not self.client_secret and not cc_flow_client_secret:
-            raise Exception(f"sa client secret must be present as env var or supplied on construction time")
         self.client_id = client_id or cc_flow_client_id
         self.client_secret = client_secret or cc_flow_client_secret
+        
+        if not self.client_id:
+            raise Exception(f"sa client id must be present as env var or supplied on construction time")
+        
+        if not self.client_secret:
+            raise Exception(f"sa client secret must be present as env var or supplied on construction time")
+        
         self.scope=scope
         self.s2s_token:str=None
         self.exp:float=None
