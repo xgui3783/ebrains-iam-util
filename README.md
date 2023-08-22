@@ -31,6 +31,15 @@ sess = ClientCredentialsSession(scope=["team"])
 token = sess.get_token()
 ```
 
+or provide the token on construction time (env var will be ignored if supplied)
+
+```python
+from ebrains_iam.client_credential import ClientCredentialsSession
+
+sess = ClientCredentialsSession("your_client_id_2", "your_client_secret_2", scope=["team"])
+token = sess.get_token()
+```
+
 ## License
 
 MIT

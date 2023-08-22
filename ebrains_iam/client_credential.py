@@ -9,33 +9,37 @@ from .base import OIDCEndpointConfig, init_config
 class ClientCredentialsSession:
     oidc_config:OIDCEndpointConfig=None
 
-    def __init__(self, scope: List[str]=[]) -> None:
+    def __init__(self, client_id:str, client_secret:str, *, scope: List[str]=[]) -> None:
         from .config import cc_flow_client_id, cc_flow_client_secret
         if not self.oidc_config:
             self.__class__.oidc_config = init_config()
             self.oidc_config = self.__class__.oidc_config
         
-        if not cc_flow_client_id or not cc_flow_client_secret:
-            raise Exception(f"sa client id or sa client secret not set. cannot get s2s token")
+        if not self.client_id and not cc_flow_client_id:
+            raise Exception(f"sa client id must be present as env var or supplied on construction time")
         
+        if not self.client_secret and not cc_flow_client_secret:
+            raise Exception(f"sa client secret must be present as env var or supplied on construction time")
+        self.client_id = client_id or cc_flow_client_id
+        self.client_secret = client_secret or cc_flow_client_secret
         self.scope=scope
         self.s2s_token:str=None
         self.exp:float=None
         
         
     def refresh(self):
-        from .config import cc_flow_client_id, cc_flow_client_secret
         token_endpoint = self.oidc_config.token_endpoint
         data={
-            "client_id": cc_flow_client_id,
-            "client_secret": cc_flow_client_secret,
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
             "grant_type": "client_credentials",
         }
         if self.scope:
-            data["scope"] = "+".join(self.scope)
+            # scope is space delimited
+            # see https://datatracker.ietf.org/doc/html/rfc8628#section-3.1
+            data["scope"] = " ".join(self.scope)
 
         resp = requests.post(token_endpoint, data=data)
-        print(data, (cc_flow_client_id, cc_flow_client_secret))
         resp.raise_for_status()
 
         token = resp.json()

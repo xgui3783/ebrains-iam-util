@@ -17,7 +17,9 @@ def start(scope:List[str]=[]) -> str:
     if scope:
         assert isinstance(scope, list)
         assert all(isinstance(item, str) for item in scope)
-        data["scope"]="+".join(scope)
+            # scope is space delimited
+            # see https://datatracker.ietf.org/doc/html/rfc8628#section-3.1
+        data["scope"]=" ".join(scope)
     
     resp = requests.post(url=config.device_authorization_endpoint, data=data)
     resp.raise_for_status()
