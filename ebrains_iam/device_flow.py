@@ -5,8 +5,11 @@ from time import sleep
 from .exceptions import AuthError
 from .base import init_config
 
-def start(scope:List[str]=[]) -> str:
-    from .config import client_id, polling_interval, max_retries
+def start(scope:List[str]=[], client_id: str=None) -> str:
+    from .config import client_id as env_client_id, polling_interval, max_retries
+
+    client_id = client_id or env_client_id
+    
     assert client_id
 
     config = init_config()
