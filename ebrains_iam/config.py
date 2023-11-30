@@ -9,3 +9,5 @@ max_retries=int(os.getenv("EBRAINS_POLLING_MAX_RETRIES", "12"))
 
 cc_flow_client_id=os.getenv("EBRAINS_CCFLOW_CLIENT_ID")
 cc_flow_client_secret=os.getenv("EBRAINS_CCFLOW_CLIENT_SECRET")
+
+wiki_endpoint = os.getenv("EBRAINS_WIKI_ENDPOINT", "https://wiki.ebrains.eu")
