@@ -13,37 +13,19 @@ def _parse_client_id(client_id: str=None):
     return client_id
 
 
-def refresh(refresh_token: str, client_id: str=None):
-    return refresh_raw(refresh_token, client_id).get("access_token")
-
-def refresh_raw(refresh_token: str, client_id: str=None):
-
-    client_id = _parse_client_id(client_id)
-
-    config = init_config()
-    resp = requests.post(
-        url=config.token_endpoint,
-        data={
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token,
-            "client_id": client_id,
-        },
-    )
-    resp.raise_for_status()
-    resp_json = resp.json()
-    return resp_json
-
-
 def start(scope:List[str]=[], client_id: str=None) -> str:
     return start_raw(scope, client_id=client_id).get("access_token")
 
 def start_raw(scope:List[str]=None, client_id: str=None) -> dict:
-    from .config import polling_interval, max_retries
+    from .config import client_id as env_client_id, polling_interval, max_retries
 
     client_id = _parse_client_id(client_id)
     scope = scope or []
 
     config = init_config()
+    
+    client_id = client_id or env_client_id
+    assert client_id, "client id must be provided, either via envvar EBRAINS_CLIENT_ID (default: siibra), or passed in as argument"
 
     data={
         "client_id": client_id
