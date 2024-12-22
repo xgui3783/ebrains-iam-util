@@ -13,10 +13,12 @@ def _parse_client_id(client_id: str=None):
     return client_id
 
 
-def start(scope:List[str]=[], client_id: str=None) -> str:
+def start(scope:List[str]=None, client_id: str=None) -> str:
+    """Return an access token"""
     return start_raw(scope, client_id=client_id).get("access_token")
 
 def start_raw(scope:List[str]=None, client_id: str=None) -> dict:
+    """Return the whole response json, rather than just the access token"""
     from .config import client_id as env_client_id, polling_interval, max_retries
 
     client_id = _parse_client_id(client_id)
