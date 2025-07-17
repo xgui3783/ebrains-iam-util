@@ -24,8 +24,8 @@ from ebrains_iam.device_flow import start_raw
 from ebrains_iam.refresh import smart_refresh
 import time
 
-# offline scope is required for this to work
-scopes = ["offline", "team", "openid"]
+# offline_access scope is required for this to work
+scopes = ["offline_access", "team", "openid"]
 
 tokens = start_raw(scopes)
 access_token = tokens.get("access_token")
