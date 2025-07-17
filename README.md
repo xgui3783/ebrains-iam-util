@@ -17,6 +17,33 @@ from ebrains_iam.device_flow import start
 token = start(scope=["team"])
 ```
 
+Getting long lived (offline) token
+
+```python
+from ebrains_iam.device_flow import start_raw
+from ebrains_iam.refresh import smart_refresh
+import time
+
+# offline scope is required for this to work
+scopes = ["offline", "team", "openid"]
+
+tokens = start_raw(scopes)
+access_token = tokens.get("access_token")
+refresh_token = tokens.get("refresh_token")
+
+fuse = 120
+while True:
+    if fuse < 0:
+        break
+    access_token, refresh_token, flag = smart_refresh(access_token, refresh_token)
+    if flag:
+        print("Token refreshed")
+    
+    fuse -= 1
+    time.sleep(60)
+
+```
+
 Getting service 2 service token (via client credential)
 
 ```python
