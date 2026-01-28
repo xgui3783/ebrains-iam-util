@@ -17,6 +17,17 @@ from ebrains_iam.device_flow import start
 token = start(scope=["team"])
 ```
 
+Upload to bucket/download from private bucket
+
+```python
+
+from ebrains_iam.device_flow import start
+
+scopes = ["profile", "roles", "email", "openid", "group", "team"]
+
+token = start(scope=scopes)
+```
+
 Getting long lived (offline) token
 
 ```python
