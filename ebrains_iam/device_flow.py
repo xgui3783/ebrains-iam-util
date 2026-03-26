@@ -1,6 +1,7 @@
 from typing import List
 import requests
 from time import sleep
+import sys
 
 from .exceptions import AuthError
 from .base import init_config
@@ -48,9 +49,9 @@ def start_raw(scope:List[str]=None, client_id: str=None) -> dict:
 
     device_code = resp_json.get("device_code")
 
-    print("***")
-    print(f"To continue, please go to {resp_json.get('verification_uri_complete')}")
-    print("***")
+    print("***", file=sys.stderr)
+    print(f"To continue, please go to {resp_json.get('verification_uri_complete')}", file=sys.stderr)
+    print("***", file=sys.stderr)
     
     attempt_number = 0
     sleep_timer = polling_interval
